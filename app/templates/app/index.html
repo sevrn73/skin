@@ -1,0 +1,244 @@
+<html lang="ru">
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta charset="utf-8">
+    <link rel="shortcut icon" id="favicon" href="/static/app/favicon.jfif">
+
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta property="og:type" content="website"/>
+    <meta property="og:site_name" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+
+  <link rel="stylesheet" href="/static/app/css/style_pvt.css" type="text/css">
+  <script src="https://kit.fontawesome.com/1d580faad2.js" crossorigin="anonymous"></script> 
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <!-- Latest Sortable -->
+    <script src="https://raw.githack.com/SortableJS/Sortable/master/Sortable.js"></script>
+    <script src="https://cdn.plot.ly/plotly-2.3.1.min.js"></script>
+    <title>Расчет скин-фактора</title>
+  </head>
+  
+<div class="wrapper">
+
+<aside class="main-sidebar" id="ms">
+    <div id="lg" class="logopanel"></div>
+    <div id="lg_cl" class="logopanel_closed" ><i class="fas fa-home"></i></div>
+    <div class="sidebar-inner" id="scroll_nav_open">
+        <div class="panel-body">
+            <h2 class="head_panel" style="font">Настройка модели</h2>
+            <table class="table">
+            <tbody>
+                <tr>
+                    <td style="vertical-align: middle;width: 100%;"><button type="button" class="btn" onclick="set_type(10)">Cовершенная по степени вскрытия вертикальная скважина </button></td>
+                </tr>
+                <tr>
+                    <td style="vertical-align: middle;width: 100%;"><button type="button" class="btn" onclick="set_type(11)">Несовершенная по степени вскрытия вертикальная скважина </button></td>
+                </tr>
+                <tr>
+                    <td style="vertical-align: middle;width: 100%;"><button type="button" class="btn" onclick="set_type(20)">Полностью перфорированая вертикальная скважина </button></td>
+                </tr>
+                <tr>
+                    <td style="vertical-align: middle;width: 100%;"><button type="button" class="btn" onclick="set_type(21)">Частично перфорированая вертикальная скважина </button></td>
+                </tr>
+                <tr>
+                    <td style="vertical-align: middle;width: 100%;"><button type="button" class="btn" onclick="set_type(30)">Совершенная по степени вскрытия необсаженная наклонно-направленная скважина </button></td>
+                </tr>
+                <tr>
+                    <td style="vertical-align: middle;width: 100%;"><button type="button" class="btn" onclick="set_type(31)">Несовершенная по степени вскрытия необсаженная наклонно-направленная скважина </button></td>
+                </tr>
+                <tr>
+                    <td style="vertical-align: middle;width: 100%;"><button type="button" class="btn" onclick="set_type(40)">Полностью перфорированная наклонно-направленная скважина </button></td>
+                </tr>
+                <tr>
+                    <td style="vertical-align: middle;width: 100%;"><button type="button" class="btn" onclick="set_type(41)">Частично перфорированная наклонно-направленная скважина </button></td>
+                </tr>
+                <tr style="display: none">
+                    <td><input type="number" id="type" value="10"></td>
+                </tr>
+            </tbody>
+            </table>
+        </div>
+        <button class="accordion">Исходные параметры пласта</button>
+        <div class="panel">
+            <table class="table">
+                <colgroup>
+                    <col span="1" style="width: 80%;">
+                    <col span="1" style="width: 20%;">
+                </colgroup>
+                <tbody>          
+                    <tr>
+                        <td style="vertical-align: middle;">Проницаемость пласта, мД:</td>
+                        <td style="vertical-align: middle;"><input type="number" class="input_filter" id="k" value="10">  </td>
+                    </tr>         
+                    <tr>
+                        <td style="vertical-align: middle;">Толщина пласта, м:</td>
+                        <td style="vertical-align: middle;"><input type="number" class="input_filter" id="h" value="10">  </td>
+                    </tr>  
+                    <tr>
+                        <td style="vertical-align: middle;">Среднее пластовое давление, атм:</td>
+                        <td style="vertical-align: middle;"><input type="number" class="input_filter" id="Pres" value="250">  </td>
+                    </tr>  
+                    <tr>
+                        <td style="vertical-align: middle;">Забойное давление, атм:</td>
+                        <td style="vertical-align: middle;"><input type="number" class="input_filter" id="Pwf" value="50">  </td>
+                    </tr>  
+                    <tr>
+                        <td style="vertical-align: middle;">Вякость нефти, сПз:</td>
+                        <td style="vertical-align: middle;"><input type="number" class="input_filter" id="mu" value="1.01">  </td>
+                    </tr>  
+                    <tr>
+                        <td style="vertical-align: middle;">Объемный коэффициент, м3/м3:</td>
+                        <td style="vertical-align: middle;"><input type="number" class="input_filter" id="B" value="1.228">  </td>
+                    </tr>  
+                    <tr>
+                        <td style="vertical-align: middle;">Радиус контура, м:</td>
+                        <td style="vertical-align: middle;"><input type="number" class="input_filter" id="re" value="500">  </td>
+                    </tr>  
+                    <tr>
+                        <td style="vertical-align: middle;">Радиус скважины, м:</td>
+                        <td style="vertical-align: middle;"><input type="number" class="input_filter" id="rw" value="0.108">  </td>
+                    </tr>                                           
+                </tbody>
+            </table>
+        </div>
+        <button class="accordion">Параметры для расчета скин фактора</button>
+        <div class="panel">
+            <table class="table">
+                <colgroup>
+                    <col span="1" style="width: 80%;">
+                    <col span="1" style="width: 20%;">
+                </colgroup>
+                <tbody>          
+                    <tr id="s_kd">
+                        <td style="vertical-align: middle;">Измененная проницаемость, мД:</td>
+                        <td style="vertical-align: middle;"><input type="number" class="input_filter" id="kd" value="5">  </td>
+                    </tr>         
+                    <tr id="s_rd">
+                        <td style="vertical-align: middle;">Радиус зоны с измененной проницаемостью, м:</td>
+                        <td style="vertical-align: middle;"><input type="number" class="input_filter" id="rd" value="0.324">  </td>
+                    </tr>  
+                    <tr id="s_model" style='display: none'>
+                        <td style="vertical-align: middle;">Модель:</td>
+                        <td style="vertical-align: middle;">
+                            <select id="model">
+                                <option value='0'>Корреляция Papatzacos</option>
+                                <option value='1'>Корреляция Vrbik</option>
+                            </select>
+                        </td>
+                    </tr>  
+                    <tr id="s_hw" style='display: none'>
+                        <td style="vertical-align: middle;">Мощность вскрытого интервала, м:</td>
+                        <td style="vertical-align: middle;"><input type="number" class="input_filter" id="hw" value="7.5">  </td>
+                    </tr>  
+                    <tr id="s_zw" style='display: none'>
+                        <td style="vertical-align: middle;">Расстояние от подошвы пласта до центра интервала, м:</td>
+                        <td style="vertical-align: middle;"><input type="number" class="input_filter" id="zw" value="5">  </td>
+                    </tr>  
+                    <tr id="s_kv" style='display: none'>
+                        <td style="vertical-align: middle;">Проницаемость пласта в вертикальном направлении, мД:</td>
+                        <td style="vertical-align: middle;"><input type="number" class="input_filter" id="kv" value="1">  </td>
+                    </tr>  
+                    <tr id="s_y" style='display: none'>
+                        <td style="vertical-align: middle;">Коэффициент несовершенства степени вскрытия:</td>
+                        <td style="vertical-align: middle;"><input type="number" class="input_filter" id="y" value="1">  </td>
+                    </tr>    
+                    
+                    <tr id="s_phi" style='display: none'>
+                        <td style="vertical-align: middle;">Фазировка перфорационных зарядов, град:</td>
+                        <td style="vertical-align: middle;"><input type="number" class="input_filter" id="phi" value="0">  </td>
+                    </tr>    
+                    <tr id="s_Lp" style='display: none'>
+                        <td style="vertical-align: middle;">Длина перфорационных каналов, м:</td>
+                        <td style="vertical-align: middle;"><input type="number" class="input_filter" id="Lp" value="0.1">  </td>
+                    </tr>    
+                    <tr id="s_rp" style='display: none'>
+                        <td style="vertical-align: middle;">Радиус перфорационных каналов, м:</td>
+                        <td style="vertical-align: middle;"><input type="number" class="input_filter" id="rp" value="0.0005">  </td>
+                    </tr>    
+                    <tr id="s_ns" style='display: none'>
+                        <td style="vertical-align: middle;">Плотность перфорационных отверстий, отв/м:</td>
+                        <td style="vertical-align: middle;"><input type="number" class="input_filter" id="ns" value="10">  </td>
+                    </tr>    
+                    <tr id="s_kcz" style='display: none'>
+                        <td style="vertical-align: middle;">Проницаемость зоны разрушения породы вокруг перфорационных каналов, мД:</td>
+                        <td style="vertical-align: middle;"><input type="number" class="input_filter" id="kcz" value="20">  </td>
+                    </tr>    
+                    <tr id="s_rcz" style='display: none'>
+                        <td style="vertical-align: middle;">Радиус зоны разрушения породы вокруг перфорационных каналов, м:</td>
+                        <td style="vertical-align: middle;"><input type="number" class="input_filter" id="rcz" value="0.2">  </td>
+                    </tr>    
+                    <tr id="s_teta" style='display: none'>
+                        <td style="vertical-align: middle;">Угол отклонения ствола скважины от вертикали, град:</td>
+                        <td style="vertical-align: middle;"><input type="number" class="input_filter" id="teta" value="60">  </td>
+                    </tr>    
+                    <tr id="s_Lwpc" style='display: none'>
+                        <td style="vertical-align: middle;">Длина наклонно-направленной скважины в пределах продуктивного пласта, открытая для притока флюида, м:</td>
+                        <td style="vertical-align: middle;"><input type="number" class="input_filter" id="Lwpc" value="200">  </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <br><br>
+        <div class="but">
+            <button type="button" class="Result" onclick="plot0()">Рассчитать </button>
+            {% comment %} <button type="button" class="Result" onclick="plot1()">Неустановившийся </button> {% endcomment %}
+        </div>
+    </div>
+</aside>
+
+  <div class="content-wrapper" id="content">
+    <div class="column" >
+
+
+      <div class="head_result" id="res">Результат</div>
+      <div class="block_result" id="col_share_left">
+        <div class="float">
+            <div class="float_header" style="background: rgba(44, 64, 85, .3); color:#fff;">
+            </div>
+            <div class="float_body">
+                <div class='row'>
+                    <div id='plot'></div>
+                    <div>
+                        <img id='10' src="/static/app/1.png" style='width:100%; height:70%;display:none;'>
+                        <img id='11' src="/static/app/2.png" style='width:100%; height:70%;display:none;'>
+                        <img id='20' src="/static/app/3.png" style='width:100%; height:70%;display:none;'>
+                        <img id='21' src="/static/app/4.png" style='width:100%; height:70%;display:none;'>
+                        <img id='30' src="/static/app/5.png" style='width:100%; height:70%;display:none;'>
+                        <img id='31' src="/static/app/6.png" style='width:100%; height:70%;display:none;'>
+                        <img id='40' src="/static/app/7.png" style='width:100%; height:70%;display:none;'>
+                        <img id='41' src="/static/app/8.png" style='width:100%; height:70%;display:none;'>
+                    </div>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+
+
+    <script>
+        var acc = document.getElementsByClassName("accordion");
+        var i;
+
+        for (i = 0; i < acc.length; i++) {
+        acc[i].addEventListener("click", function() {
+            /* Toggle between adding and removing the "active" class,
+            to highlight the button that controls the panel */
+            this.classList.toggle("active");
+
+            /* Toggle between hiding and showing the active panel */
+            var panel = this.nextElementSibling;
+            if (panel.style.display === "block") {
+            panel.style.display = "none";
+            } else {
+            panel.style.display = "block";
+            }
+        });
+        }
+    </script>
+    <script src="/static/app/js/plot.js"></script>
+</body>
+</html>
